@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="Opera.Controls.NPToggleButton"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Opera.Controls"
+             mc:Ignorable="d"
+             DataContext="{Binding Source={RelativeSource Self}}"
+             d:DesignHeight="40"
+             d:DesignWidth="280">
+    <StackPanel Height="{Binding Height, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                HorizontalAlignment="Left"
+                Orientation="Horizontal"
+                VerticalAlignment="Stretch">
+        <TextBlock HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Foreground="Ivory"
+                   FontSize="30"
+                   Text="{Binding Text, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                   Margin="0, 0, 80, 0" />
+        <Grid Cursor="Hand"
+              x:Name="test"
+              Width="80"
+              Height="{Binding Height, RelativeSource={RelativeSource AncestorType=UserControl}}"
+              HorizontalAlignment="Right"
+              VerticalAlignment="Center"
+              MouseLeftButtonUp="Btn_MouseLeftButtonUp">
+            <Border x:Name="border"
+                    Background="DarkGray"
+                    Width="60"
+                    Height="30"
+                    CornerRadius="20"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center">
+                <Ellipse x:Name="ToggleSwitch"
+                         Width="30"
+                         Height="30"
+                         HorizontalAlignment="Left"
+                         VerticalAlignment="Center"
+                         Stretch="Uniform"
+                         Fill="Gray" />
+            </Border>
+        </Grid>
+    </StackPanel>
+</UserControl>

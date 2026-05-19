@@ -1,0 +1,9 @@
+{
+  "name": "Simple Ad Block",
+  "version": "1.0",
+  "injectJs": "content.js",
+  "injectCss": "style.css",
+  "matches": [
+    "*://*/*"
+  ]
+}
