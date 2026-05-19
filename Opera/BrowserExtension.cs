@@ -8,12 +8,12 @@ namespace Opera;
 
 public class BrowserExtension
 {
-    public string Name { get; set; }
-    public string Version { get; set; }
-    public string InjectJs { get; set; }
-    public string InjectCss { get; set; }
-    public List<string> Matches { get; set; }
-    public string FolderPath { get; set; }
+    public string? Name { get; set; }
+    public string? Version { get; set; }
+    public string? InjectJs { get; set; }
+    public string? InjectCss { get; set; }
+    public List<string>? Matches { get; set; }
+    public string? FolderPath { get; set; }
 
     public static List<BrowserExtension> LoadExtensions()
     {
@@ -39,14 +39,17 @@ public class BrowserExtension
             string json = File.ReadAllText(manifestPath);
             //string js = File.ReadAllText(jsPath);
 
-            BrowserExtension ext =
+            BrowserExtension? ext =
                 JsonSerializer.Deserialize<BrowserExtension>(json);
 
-            ext.FolderPath = dir;
-            ext.InjectJs = jsPath;
+            ext?.FolderPath = dir;
+            ext?.InjectJs = jsPath;
 
 
-            result.Add(ext);
+            if (ext is not null)
+            {
+                result.Add(ext); 
+            }
         }
 
         return result;

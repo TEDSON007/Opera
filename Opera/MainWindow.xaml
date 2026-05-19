@@ -18,7 +18,8 @@
         <TabControl x:Name="Tabs" 
                     FlowDirection="LeftToRight" 
                     Background="#222"
-                    ItemsSource="{Binding TabItems}">
+                    ItemsSource="{Binding TabItems}"
+                    >
             
         </TabControl>
     </Grid>

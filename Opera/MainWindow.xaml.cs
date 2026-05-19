@@ -46,15 +46,9 @@ public partial class MainWindow : Window
 
     private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
     {
-        Debug.WriteLine($"Path: {Common.AppFolder}");
         var browserControl = new BrowserControl("https://stackoverflow.com");
-        TabItem tabItem = new()
-        {
-            Header = browserControl.Browser?.Source?.ToString() ?? "Start",
-            Content = browserControl,
-        };
-        
-        _browserControls.Add(browserControl);
+        NPTab tabItem = CreateTab(browserControl);
+
         TabItems.Add(tabItem);
         Tabs.ItemsSource = TabItems;
         Tabs.SelectedItem = tabItem;
@@ -62,17 +56,27 @@ public partial class MainWindow : Window
         browserControl.SettingsClicked += BrowserControl_SettingsClicked;
     }
 
+    private static NPTab CreateTab(BrowserControl browserControl)
+    {
+        return new()
+        {
+            Header = browserControl.Browser?.Source?.ToString() ?? "Start",
+            Content = browserControl,
+        };
+    }
+
     private void BrowserControl_SettingsClicked(BrowserControl obj)
     {
         SettingsPanel settingsPanel = new SettingsPanel();
         settingsPanel.CloseRequested += SettingsPanel_CloseRequested;
-        TabItem settingsTab = new()
+        NPTab settingsTab = new()
         {
             Header = "Settings",
             Content = settingsPanel,
             HorizontalAlignment = HorizontalAlignment.Stretch,
             VerticalAlignment = VerticalAlignment.Stretch,
         };
+        
         TabItems.Add(settingsTab);
         Tabs.SelectedItem = settingsTab;
     }
@@ -81,8 +85,8 @@ public partial class MainWindow : Window
     {
         
         var st = TabItems.FirstOrDefault(t => t.Content == obj);
-        TabItems.Remove(st);
-        obj = null;
+        TabItems.Remove(st!);
+        //obj = null;
         st = null;
     }
 
@@ -90,10 +94,14 @@ public partial class MainWindow : Window
     {
         var v = TabItems.FirstOrDefault(t => t.Content == obj);
         string newUri = obj.Browser.CoreWebView2.Source;
-        v.Header = newUri;
-        if (!_browserHistory.Contains(newUri))
+        if (v is not null)
         {
-            _browserHistory.Add(newUri); 
+            v.Header = newUri;
+            if (!_browserHistory.Contains(newUri))
+            {
+                _browserHistory.Add(newUri);
+            } 
         }
     }
+
 }
