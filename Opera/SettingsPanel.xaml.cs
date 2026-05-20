@@ -1,45 +1,55 @@
-﻿using Opera.Controls;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Opera;
 public partial class SettingsPanel : UserControl
 {
-    public event Action<SettingsPanel>? CloseRequested;
+    public event Action<Settings>? CloseRequested;
     public event Action<SettingsPanel>? SettingsUpdate;
+
+    public static Settings Settings { get; private set; }
+
     public SettingsPanel()
     {
         InitializeComponent();
     }
 
+    public static Settings Load()
+    {
+        // TODO deserialization
+        Settings settings = new Settings();
+        Common.DebugWriteLine("Load Settings Not implimemted");
+        return settings;
+    }
+
+    internal static void Save()
+    {
+        // TODO eerialization
+        Common.DebugWriteLine("Save Settings Not implimemted");
+    }
+
     private void btnClose_Click(object sender, RoutedEventArgs e)
     {
-        CloseRequested?.Invoke(this);
-        // MainWindow to handle saving settins TODO
+        // Should MainWindow handle saving settins? TODO
+        Save();
+        CloseRequested.Invoke(Settings);
     }
 
     private void tbtnTheme_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
     {
-        if(sender is NPToggleButton nPToggleButton)
-        {
-            Common.DebugWriteLine(nPToggleButton.Text);
-            SettingsUpdate?.Invoke(this);
-        }
+        // TODO Rethink
+        //if(sender is NPToggleButton nPToggleButton)
+        //{
+        //    Common.DebugWriteLine(nPToggleButton.Text);
+        //    SettingsUpdate?.Invoke(this);
+        //}
     }
+
+    
 }
 
-class Settings
+public class Settings
 {
     // Model to save/load settings TODO 
 }

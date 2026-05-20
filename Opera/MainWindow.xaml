@@ -15,12 +15,43 @@
         </Style>
     </Window.Resources>
     <Grid>
-        <TabControl x:Name="Tabs" 
-                    FlowDirection="LeftToRight" 
-                    Background="#222"
-                    ItemsSource="{Binding TabItems}"
-                    >
-            
-        </TabControl>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <StackPanel Orientation="Horizontal"
+                        x:Name="NavPanel">
+                <Button x:Name="btnNavBack"
+                        Click="btnNavBack_Click"
+                        Content="Back" />
+                <Button x:Name="btnNavForward"
+                        Click="btnNavForward_Click"
+                        Content="Forward" />
+                <Button x:Name="btnNavRefresh"
+                        Click="btnNavRefresh_Click"
+                        Content="Refresh" />
+                <ComboBox x:Name="lbxAddress"
+                          Margin="100, 0, 10, 0"
+                          MinWidth="300"
+                          ItemsSource="{Binding History}"
+                          IsEditable="True" />
+                <Button x:Name="btnSearch"
+                        Click="btnSearch_Click"
+                        Content="Search" />
+                <Button x:Name="btnSettings"
+                        Click="btnSettings_Click"
+                        Content="Settings" />
+            </StackPanel>
+        </Grid>
+        <local:NPTabControl x:Name="NPTabCon"
+                            Grid.Row="1"
+                            FlowDirection="LeftToRight"
+                            Background="#222"
+                            ItemsSource="{Binding TabItems}" />
     </Grid>
 </Window>

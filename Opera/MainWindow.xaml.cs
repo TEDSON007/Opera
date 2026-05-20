@@ -5,12 +5,12 @@ using System.Linq;
 using System.Media;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Windows.Documents;
 namespace Opera;
 
 public partial class MainWindow : Window
 {
     #region Fields
-    List<BrowserControl> _browserControls = new List<BrowserControl>();
     List<string> _browserHistory = new List<string>();
     #endregion
 
@@ -35,6 +35,7 @@ public partial class MainWindow : Window
     #region Constructors
     public MainWindow()
     {
+        
         Loaded += MainWindow_Loaded;
         InitializeComponent();
     }
@@ -46,62 +47,32 @@ public partial class MainWindow : Window
 
     private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
     {
-        var browserControl = new BrowserControl("https://stackoverflow.com");
-        NPTab tabItem = CreateTab(browserControl);
+        NPTab nPTab = NPTabCon.CreateTab();
+        nPTab.WebView.NavigationStarting += WebView_NavigationStarting;
+        nPTab.WebView.NavigationCompleted += WebView_NavigationCompleted;
 
-        TabItems.Add(tabItem);
-        Tabs.ItemsSource = TabItems;
-        Tabs.SelectedItem = tabItem;
-        browserControl.NavComplete += BrowserControl_NavComplete;
-        browserControl.SettingsClicked += BrowserControl_SettingsClicked;
-    }
+        NPTabCon.SelectedItem = nPTab;
+        NPTabCon.ItemsSource = TabItems;
 
-    private static NPTab CreateTab(BrowserControl browserControl)
-    {
-        return new()
-        {
-            Header = browserControl.Browser?.Source?.ToString() ?? "Start",
-            Content = browserControl,
-        };
-    }
-
-    private void BrowserControl_SettingsClicked(BrowserControl obj)
-    {
-        SettingsPanel settingsPanel = new SettingsPanel();
-        settingsPanel.CloseRequested += SettingsPanel_CloseRequested;
-        NPTab settingsTab = new()
-        {
-            Header = "Settings",
-            Content = settingsPanel,
-            HorizontalAlignment = HorizontalAlignment.Stretch,
-            VerticalAlignment = VerticalAlignment.Stretch,
-        };
-        
-        TabItems.Add(settingsTab);
-        Tabs.SelectedItem = settingsTab;
+        TabItems.Add(nPTab);
     }
 
     private void SettingsPanel_CloseRequested(SettingsPanel obj)
     {
-        
-        var st = TabItems.FirstOrDefault(t => t.Content == obj);
-        TabItems.Remove(st!);
-        //obj = null;
-        st = null;
+        SettingsPanel.Save();
     }
 
-    private void BrowserControl_NavComplete(BrowserControl obj)
+    private void btnSettings_Click(object sender, RoutedEventArgs e)
     {
-        var v = TabItems.FirstOrDefault(t => t.Content == obj);
-        string newUri = obj.Browser.CoreWebView2.Source;
-        if (v is not null)
+        SettingsPanel settingsPanel = new SettingsPanel();
+        Settings settings = SettingsPanel.Load();
+        NPTab settingsTab = new()
         {
-            v.Header = newUri;
-            if (!_browserHistory.Contains(newUri))
-            {
-                _browserHistory.Add(newUri);
-            } 
-        }
-    }
+            Header = "Settings",
+            Content = settingsPanel,
+        };
 
+        NPTabCon.NPTabs.Add(settingsTab);
+        NPTabCon.SelectedItem = settingsTab;
+    }
 }
