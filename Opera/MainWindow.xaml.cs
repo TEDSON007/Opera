@@ -15,11 +15,12 @@ public partial class MainWindow : Window
     #endregion
 
     #region Properties
-
+    HistoryModel? MyHistory {  get; set; }
+    ObservableCollection<HistoryItem> _visiedPages {  get; set; }
     #endregion
 
     #region Dependancies
-    // Does this eed to be a dependecy? TODO
+    // TODO Does this eed to be a dependecy? 
     public ObservableCollection<TabItem> TabItems
     {
         get { return (ObservableCollection<TabItem>)GetValue(TabItemsProperty); }
@@ -45,17 +46,7 @@ public partial class MainWindow : Window
 
     #endregion
 
-    private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
-    {
-        NPTab nPTab = NPTabCon.CreateTab();
-        nPTab.WebView.NavigationStarting += WebView_NavigationStarting;
-        nPTab.WebView.NavigationCompleted += WebView_NavigationCompleted;
-
-        NPTabCon.SelectedItem = nPTab;
-        NPTabCon.ItemsSource = TabItems;
-
-        TabItems.Add(nPTab);
-    }
+    
 
     private void SettingsPanel_CloseRequested(SettingsPanel obj)
     {
@@ -64,6 +55,8 @@ public partial class MainWindow : Window
 
     private void btnSettings_Click(object sender, RoutedEventArgs e)
     {
+        MyHistory.CreateCurrentHistoryPage();
+        return;
         SettingsPanel settingsPanel = new SettingsPanel();
         Settings settings = SettingsPanel.Load();
         NPTab settingsTab = new()
@@ -74,5 +67,26 @@ public partial class MainWindow : Window
 
         NPTabCon.NPTabs.Add(settingsTab);
         NPTabCon.SelectedItem = settingsTab;
+    }
+
+    private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
+    {
+        MyHistory = new();
+        _visiedPages = MyHistory.CurretHisory();
+
+        NPTab nPTab = NPTabCon.CreateTab(MyHistory);
+        nPTab.WebView.NavigationStarting += WebView_NavigationStarting;
+        nPTab.WebView.NavigationCompleted += WebView_NavigationCompleted;
+        nPTab.WebView.WebMessageReceived += WebView_WebMessageReceived;
+
+        NPTabCon.SelectedItem = nPTab;
+        NPTabCon.ItemsSource = TabItems;
+
+        TabItems.Add(nPTab);
+    }
+
+    private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+    {
+        MyHistory?.Save();
     }
 }

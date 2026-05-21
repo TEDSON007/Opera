@@ -25,13 +25,13 @@ public partial class SettingsPanel : UserControl
 
     internal static void Save()
     {
-        // TODO eerialization
+        // TODO serialization
         Common.DebugWriteLine("Save Settings Not implimemted");
     }
 
     private void btnClose_Click(object sender, RoutedEventArgs e)
     {
-        // Should MainWindow handle saving settins? TODO
+        // TODO Should MainWindow handle saving settins? 
         Save();
         CloseRequested.Invoke(Settings);
     }
@@ -51,5 +51,6 @@ public partial class SettingsPanel : UserControl
 
 public class Settings
 {
-    // Model to save/load settings TODO 
+    // TODO Model to save/load settings 
+
 }

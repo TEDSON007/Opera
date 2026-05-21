@@ -33,5 +33,16 @@ public class NPTabControl : TabControl
         
         return nPTab;
     }
+
+    public NPTab CreateTab(HistoryModel? historyModel)
+    {
+        if (historyModel is null)
+        {
+            return CreateTab();
+        }
+        historyModel.CreateCurrentHistoryPage();
+        return CreateTab();
+        
+    }
     #endregion
 }
