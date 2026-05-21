@@ -3,6 +3,56 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# mine
+# Build results
+bin/
+obj/
+
+# Visual Studio folders
+.vs/
+
+# Rider
+.idea/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Debug logs
+*.log
+
+# NuGet packages
+packages/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Windows thumbnail/cache files
+Thumbs.db
+Desktop.ini
+
+# Publish output
+publish/
+
+# Test results
+TestResults/
+
+# WebView2 user data (optional but recommended)
+WebView2/
+
+# Generated files
+GeneratedFiles/
+
+# Resharper
+_ReSharper*/
+*.ReSharper
+
+# VS Code
+.vscode/
+
 # User-specific files
 *.rsuser
 *.suo
@@ -265,6 +315,7 @@ ServiceFabricBackup/
 *.mdf
 *.ldf
 *.ndf
+*.db
 
 # Business Intelligence projects
 *.rdl.data
